@@ -4,6 +4,7 @@ class Stopwatch {
         this.display = display;
         this.reset();
         this.print(this.times);
+        this.savedTimes = [];
     }
 
     reset() {
@@ -49,7 +50,17 @@ class Stopwatch {
 
     stop() {
         this.running = false;
+
         clearInterval(this.watch);
+    }
+
+    save() {
+        this.running = false;
+        this.savedTime = this.format(this.times);
+
+        this.savedTimes.push(this.savedTime);
+
+        // console.log(this.savedTimes);
     }
 
     restart() {
@@ -57,9 +68,39 @@ class Stopwatch {
         this.reset();
         this.print();
     }
+
+}
+
+class TimeTable {
+
+    constructor(displaySavedTimes) {
+        this.displaySavedTimes = displaySavedTimes;
+        this.timeTable = [];
+    }
+
+    saveTimes() {
+        this.timeTable.push(stopwatch.savedTimes);
+        console.log(this.timeTable);
+    }
+
+    formatTimeTable() {
+        return `<li>${this.timeTable}</li>`;
+    }
+
+    printSavedTimes() {
+        this.displaySavedTimes.innerText = this.formatTimeTable(this.timeTable);
+    }
+
+    print() {
+
+        this.printSavedTimes();
+    }
+
 }
 
 const stopwatch = new Stopwatch(document.querySelector('.stopwatch'));
+
+const timeTable = new TimeTable(document.querySelector('.results'));
 
 let startButton = document.getElementById('start');
 startButton.addEventListener('click', () => stopwatch.start());
@@ -69,6 +110,9 @@ stopButton.addEventListener('click', () => stopwatch.stop());
 
 let resetButton = document.getElementById('reset');
 resetButton.addEventListener('click', () => stopwatch.restart());
+
+let saveButton = document.getElementById('save');
+saveButton.addEventListener('click', () => stopwatch.save(), timeTable.print());
 
 function pad0(value) {
     let result = value.toString();
