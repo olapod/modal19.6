@@ -6,6 +6,7 @@ class Stopwatch {
         this.print(this.times);
         this.savedTimes = [ ];
         
+        
     }
 
     reset() {
@@ -64,13 +65,20 @@ class Stopwatch {
     save() {
         this.running = false;
         this.savedTime = this.format(this.times);
-        
         this.savedTimes.push(this.savedTime);
+        // this.formatTimeTable();
+        this.printSavedTimes();
+
+        
+       // console.log(this.savedTimes);
+    }
+
+    resetTimeTable() {
+        
+        this.savedTimes = [];
         
         // console.log(this.savedTimes);
     }
-
-
     
 
     restart() {
@@ -78,38 +86,21 @@ class Stopwatch {
         this.reset();
         this.print();
     }
-
-}
-
-class TimeTable {
-
-    constructor(displaySavedTimes) {
-        this.displaySavedTimes = displaySavedTimes;
-        this.timeTable = [];
-               
-    }
-
-    saveTimes () {
-        this.timeTable.push(stopwatch.savedTimes);
-        console.log(this.timeTable);
-    }
-
-   formatTimeTable () {
-        return `<li>${this.timeTable}</li>`
+    
+    formatTimeTable () {
+       console.log(this.savedTimes.length);
+       for (let i =0; i < this.savedTimes.length; i++) {
+       return `<li>${this.savedTimes[i]}</li>`
+       }
     }
 
     printSavedTimes() {
-        this.displaySavedTimes.innerText = this.formatTimeTable(this.timeTable);
-    }
+        const timeTable = document.querySelector('.results')
+        timeTable.innerText = this.formatTimeTable();
+        }
+}
 
-    
 
-    print () {
-        
-        this.printSavedTimes();
-    }
-
- }
 
 
 
@@ -117,8 +108,6 @@ class TimeTable {
 const stopwatch = new Stopwatch(
 document.querySelector('.stopwatch'));
 
-const timeTable = new TimeTable(
-document.querySelector('.results'));  
 
 
 let startButton = document.getElementById('start');
@@ -131,7 +120,10 @@ let resetButton = document.getElementById('reset');
 resetButton.addEventListener('click', () => stopwatch.restart());
 
 let saveButton = document.getElementById('save');
-saveButton.addEventListener('click', () => stopwatch.save(), timeTable.print());
+saveButton.addEventListener('click', () => stopwatch.save());
+
+let resetTableButton = document.getElementById('reset_table');
+resetTableButton.addEventListener('click', () => stopwatch.resetTimeTable());
 
 function pad0(value) {
     let result = value.toString();
