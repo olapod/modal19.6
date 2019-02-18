@@ -5,6 +5,7 @@ class Stopwatch {
         this.reset();
         this.print(this.times);
         this.savedTimes = [];
+        this.timeTable = document.querySelector('.results');
     }
 
     reset() {
@@ -58,17 +59,13 @@ class Stopwatch {
         this.running = false;
         this.savedTime = this.format(this.times);
         this.savedTimes.push(this.savedTime);
-        // this.formatTimeTable();
         this.printSavedTimes();
-
-        // console.log(this.savedTimes);
     }
 
     resetTimeTable() {
 
         this.savedTimes = [];
-
-        // console.log(this.savedTimes);
+        this.timeTable.innerText = ' ';
     }
 
     restart() {
@@ -78,15 +75,16 @@ class Stopwatch {
     }
 
     formatTimeTable() {
-        console.log(this.savedTimes.length);
+        let savedItems = [];
         for (let i = 0; i < this.savedTimes.length; i++) {
-            return `<li>${this.savedTimes[i]}</li>`;
+            savedItems += `<li>${this.savedTimes[i]}</li>`;
         }
+        return savedItems;
     }
 
     printSavedTimes() {
-        const timeTable = document.querySelector('.results');
-        timeTable.innerText = this.formatTimeTable();
+
+        this.timeTable.innerHTML = this.formatTimeTable();
     }
 }
 
