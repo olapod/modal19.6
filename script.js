@@ -25,12 +25,10 @@ class Stopwatch extends React.Component {
     }
 
     format(times) {
-        return `${pad0(times.minutes)}:${pad0(times.seconds)}:${pad0(Math.floor(times.miliseconds))}`;
+        return `${pad0(this.state.times.minutes)}:${pad0(this.state.times.seconds)}:${pad0(Math.floor(this.state.times.miliseconds))}`;
     }
 
-    
-
-    start() {
+        start() {
         if (!this.state.running) {
             this.state.running = true;
             this.state.watch = setInterval(() => this.step(), 10);
@@ -66,15 +64,16 @@ class Stopwatch extends React.Component {
     save() {
         this.state.running = false;
         let savedTime = this.format(this.state.times);
-        this.savedTimes.push(savedTime);
+        this.state.savedTimes.push(savedTime);
         
+        console.log('save: ' + this.formatTimeTable ());
     }
 
     resetTimeTable() {
         
         this.state.savedTimes = [];
-        this.formatTimeTable ();
         
+        console.log('reset: ' + this.state.savedTimes.length);
     }
     
 
@@ -87,7 +86,7 @@ class Stopwatch extends React.Component {
     formatTimeTable () {
        let savedItems = [ ];
        for (let i =0; i < this.state.savedTimes.length; i++) {
-       savedItems += `<li>${this.state.savedTimes[i]}</li>`
+       savedItems.push(<li>{this.state.savedTimes[i]}</li>)
            }
        return savedItems;
     }
@@ -101,8 +100,8 @@ class Stopwatch extends React.Component {
                     <a href={"#"} className={'button'} id={'start'} onClick={() => this.start()}>Start</a>
                     <a href={"#"} className={'button'} id={'stop'} onClick={() => this.stop()}>Stop</a>
                     <a href={"#"} className={'button'} id={'reset'} onClick={() => this.reset()}>Reset</a>
-                    <a href={"#"} className={'button'} id={'save'} onClick={() => this.save()}>Save Time</a>
-                    <a href={"#"} className={'button'} id={'resetTable'} onClick={() => this.resetTimeTable()}>Reset timetable</a>
+                    <a href={"#"} className={'button'} id={'save'} onClick={() => this.save() + this.formatTimeTable()}>Save Time</a>
+                    <a href={"#"} className={'button'} id={'resetTable'} onClick={() => this.resetTimeTable() + + this.formatTimeTable()}>Reset timetable</a>
                 </div>
                 <div className={'stopwatch'}>
                     {this.format()}
