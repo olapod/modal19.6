@@ -23,8 +23,7 @@ var Stopwatch = function (_React$Component) {
                 miliseconds: 0
             },
             running: false,
-            savedTimes: [],
-            watch: null
+            savedTimes: []
 
         };
         return _this;
@@ -88,19 +87,15 @@ var Stopwatch = function (_React$Component) {
     }, {
         key: 'save',
         value: function save() {
-            this.state.running = false;
             var savedTime = this.format(this.state.times);
             this.state.savedTimes.push(savedTime);
-
-            console.log('save: ' + this.formatTimeTable());
+            this.formatTimeTable();
         }
     }, {
         key: 'resetTimeTable',
         value: function resetTimeTable() {
-
             this.state.savedTimes = [];
-
-            console.log('reset: ' + this.state.savedTimes.length);
+            this.formatTimeTable();
         }
     }, {
         key: 'restart',
@@ -119,7 +114,13 @@ var Stopwatch = function (_React$Component) {
                     this.state.savedTimes[i]
                 ));
             }
-            return savedItems;
+            return savedItems.map(function (savedItems) {
+                return React.createElement(
+                    'li',
+                    null,
+                    savedItems
+                );
+            });
         }
     }, {
         key: 'render',
@@ -159,14 +160,14 @@ var Stopwatch = function (_React$Component) {
                         React.createElement(
                             'a',
                             { href: "#", className: 'button', id: 'save', onClick: function onClick() {
-                                    return _this3.save() + _this3.formatTimeTable();
+                                    return _this3.save();
                                 } },
                             'Save Time'
                         ),
                         React.createElement(
                             'a',
                             { href: "#", className: 'button', id: 'resetTable', onClick: function onClick() {
-                                    return _this3.resetTimeTable() + +_this3.formatTimeTable();
+                                    return _this3.resetTimeTable();
                                 } },
                             'Reset timetable'
                         )
@@ -174,15 +175,28 @@ var Stopwatch = function (_React$Component) {
                     React.createElement(
                         'div',
                         { className: 'stopwatch' },
-                        this.format()
+                        React.createElement(
+                            'h3',
+                            null,
+                            this.format()
+                        )
                     ),
                     React.createElement(
                         'div',
                         { className: 'table' },
                         React.createElement(
-                            'ul',
+                            'div',
                             null,
-                            this.formatTimeTable()
+                            React.createElement(
+                                'h3',
+                                null,
+                                'List of times:'
+                            ),
+                            React.createElement(
+                                'ul',
+                                null,
+                                this.formatTimeTable()
+                            )
                         )
                     )
                 )

@@ -8,8 +8,8 @@ class Stopwatch extends React.Component {
                 miliseconds: 0
             },
             running: false,
-            savedTimes: [ ],
-            watch: null
+            savedTimes: [ ]
+            
             
         }
     }
@@ -28,7 +28,7 @@ class Stopwatch extends React.Component {
         return `${pad0(this.state.times.minutes)}:${pad0(this.state.times.seconds)}:${pad0(Math.floor(this.state.times.miliseconds))}`;
     }
 
-        start() {
+    start() {
         if (!this.state.running) {
             this.state.running = true;
             this.state.watch = setInterval(() => this.step(), 10);
@@ -55,61 +55,60 @@ class Stopwatch extends React.Component {
         this.setState({times});
     }
 
-    
     stop() {
         this.state.running = false;
          clearInterval(this.state.watch);
     }
 
     save() {
-        this.state.running = false;
         let savedTime = this.format(this.state.times);
         this.state.savedTimes.push(savedTime);
-        
-        console.log('save: ' + this.formatTimeTable ());
+        this.formatTimeTable(); 
     }
 
     resetTimeTable() {
-        
         this.state.savedTimes = [];
-        
-        console.log('reset: ' + this.state.savedTimes.length);
+        this.formatTimeTable();
     }
     
 
     restart() {
         this.state.running = false;
         this.reset();
-        
     }
     
     formatTimeTable () {
-       let savedItems = [ ];
-       for (let i =0; i < this.state.savedTimes.length; i++) {
-       savedItems.push(<li>{this.state.savedTimes[i]}</li>)
-           }
-       return savedItems;
-    }
-
-    render() {
+        let savedItems = [ ];
+        for (let i =0; i < this.state.savedTimes.length; i++) {
+        savedItems.push(<li>{this.state.savedTimes[i]}</li>)
+        }
+        return savedItems.map(savedItems => (
+            <li>{savedItems}</li>
+        ));
         
-        return (
+     }
+    
+    render() {
+        return (            
             <div className={'app'}>
             <nav className={'controls'}>
                 <div className={'btn'}>
                     <a href={"#"} className={'button'} id={'start'} onClick={() => this.start()}>Start</a>
                     <a href={"#"} className={'button'} id={'stop'} onClick={() => this.stop()}>Stop</a>
                     <a href={"#"} className={'button'} id={'reset'} onClick={() => this.reset()}>Reset</a>
-                    <a href={"#"} className={'button'} id={'save'} onClick={() => this.save() + this.formatTimeTable()}>Save Time</a>
-                    <a href={"#"} className={'button'} id={'resetTable'} onClick={() => this.resetTimeTable() + + this.formatTimeTable()}>Reset timetable</a>
+                    <a href={"#"} className={'button'} id={'save'} onClick={() => this.save()}>Save Time</a>
+                    <a href={"#"} className={'button'} id={'resetTable'} onClick={() => this.resetTimeTable()}>Reset timetable</a>
                 </div>
                 <div className={'stopwatch'}>
-                    {this.format()}
+                    <h3>{this.format()}</h3>
                 </div>
                 <div className={'table'}>
-                    <ul>
+                    <div>
+                        <h3>List of times:</h3>
+                        <ul>
                         {this.formatTimeTable()}
-                    </ul>
+                        </ul>
+                    </div>
                 </div>            
             </nav>
         </div>
