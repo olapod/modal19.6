@@ -58,7 +58,10 @@ class Stopwatch extends React.Component {
     stop() {
         this.state.running = false;
          clearInterval(this.state.watch);
-    }
+         
+         
+         
+     }
 
     save() {
         let savedTime = this.format(this.state.times);

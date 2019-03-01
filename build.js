@@ -83,6 +83,7 @@ var Stopwatch = function (_React$Component) {
         value: function stop() {
             this.state.running = false;
             clearInterval(this.state.watch);
+            this.calculate();
         }
     }, {
         key: 'save',
