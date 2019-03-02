@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -24,7 +26,6 @@ var Stopwatch = function (_React$Component) {
             },
             running: false,
             savedTimes: []
-
         };
         return _this;
     }
@@ -51,10 +52,12 @@ var Stopwatch = function (_React$Component) {
             var _this2 = this;
 
             if (!this.state.running) {
-                this.state.running = true;
-                this.state.watch = setInterval(function () {
-                    return _this2.step();
-                }, 10);
+                this.setState({
+                    running: true,
+                    watch: setInterval(function () {
+                        return _this2.step();
+                    }, 10)
+                });
             }
         }
     }, {
@@ -81,21 +84,33 @@ var Stopwatch = function (_React$Component) {
     }, {
         key: 'stop',
         value: function stop() {
-            this.state.running = false;
+            this.setState({
+                running: false
+
+            });
+
             clearInterval(this.state.watch);
-            this.calculate();
         }
     }, {
         key: 'save',
         value: function save() {
             var savedTime = this.format(this.state.times);
-            this.state.savedTimes.push(savedTime);
+            console.log('Zapisywany czas: ' + savedTime);
+
+            if (savedTime !== this.state.savedTimes[this.state.savedTimes.length - 1]) {
+                this.setState({
+                    savedTimes: [].concat(_toConsumableArray(this.state.savedTimes), [savedTime])
+                });
+            }
+            console.log('Zapisane czasy: ' + this.state.savedTimes.length - 1);
             this.formatTimeTable();
         }
     }, {
         key: 'resetTimeTable',
         value: function resetTimeTable() {
-            this.state.savedTimes = [];
+            this.setState({
+                savedTimes: []
+            });
             this.formatTimeTable();
         }
     }, {

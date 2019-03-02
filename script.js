@@ -8,9 +8,7 @@ class Stopwatch extends React.Component {
                 miliseconds: 0
             },
             running: false,
-            savedTimes: [ ]
-            
-            
+            savedTimes: [ ],
         }
     }
 
@@ -29,9 +27,12 @@ class Stopwatch extends React.Component {
     }
 
     start() {
+        
         if (!this.state.running) {
-            this.state.running = true;
-            this.state.watch = setInterval(() => this.step(), 10);
+            this.setState({
+            running: true,
+            watch: setInterval(() => this.step(), 10)
+            })
         }
     }
 
@@ -56,21 +57,30 @@ class Stopwatch extends React.Component {
     }
 
     stop() {
-        this.state.running = false;
-         clearInterval(this.state.watch);
-         
-         
-         
-     }
+        this.setState({
+            running: false,
+            
+        })
+       
+        clearInterval(this.state.watch);   
+    }
 
     save() {
         let savedTime = this.format(this.state.times);
-        this.state.savedTimes.push(savedTime);
-        this.formatTimeTable(); 
+                
+        if (savedTime !== this.state.savedTimes[this.state.savedTimes.length - 1]) {
+            this.setState({
+                savedTimes: [...this.state.savedTimes, savedTime]
+            })
+        }
+        
+        this.formatTimeTable();             
     }
 
     resetTimeTable() {
-        this.state.savedTimes = [];
+        this.setState({
+            savedTimes: [],
+        })
         this.formatTimeTable();
     }
     
